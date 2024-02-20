@@ -1,0 +1,25 @@
+19:10:58 **** Incremental Build of configuration Debug for project STP_LedMatrix ****
+make all 
+Building file: ../src/LEDMTRX_program.c
+Invoking: Cross ARM GNU C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -DDEBUG -DUSE_FULL_ASSERT -DTRACE -DOS_USE_TRACE_SEMIHOSTING_DEBUG -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DHSE_VALUE=8000000 -I"../include" -I"../system/include" -I"../system/include/cmsis" -I"../system/include/stm32f1-stdperiph" -std=gnu11 -MMD -MP -MF"src/LEDMTRX_program.d" -MT"src/LEDMTRX_program.o" -c -o "src/LEDMTRX_program.o" "../src/LEDMTRX_program.c"
+Finished building: ../src/LEDMTRX_program.c
+ 
+Building target: STP_LedMatrix.elf
+Invoking: Cross ARM GNU C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T mem.ld -T libs.ld -T sections.ld -nostartfiles -Xlinker --gc-sections -L"../ldscripts" -Wl,-Map,"STP_LedMatrix.map" --specs=nano.specs -o "STP_LedMatrix.elf"  ./system/src/stm32f1-stdperiph/misc.o ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o ./system/src/stm32f1-stdperiph/stm32f10x_rcc.o  ./system/src/newlib/_cxx.o ./system/src/newlib/_exit.o ./system/src/newlib/_sbrk.o ./system/src/newlib/_startup.o ./system/src/newlib/_syscalls.o ./system/src/newlib/assert.o  ./system/src/diag/Trace.o ./system/src/diag/trace_impl.o  ./system/src/cortexm/_initialize_hardware.o ./system/src/cortexm/_reset_hardware.o ./system/src/cortexm/exception_handlers.o  ./system/src/cmsis/system_stm32f10x.o ./system/src/cmsis/vectors_stm32f10x.o  ./src/GPIO_program.o ./src/LEDMTRX_program.o ./src/RCC_program.o ./src/STP_program.o ./src/SYSTICK_program.o ./src/main.o   
+Finished building target: STP_LedMatrix.elf
+ 
+Invoking: Cross ARM GNU Create Flash Image
+arm-none-eabi-objcopy -O ihex "STP_LedMatrix.elf"  "STP_LedMatrix.hex"
+Finished building: STP_LedMatrix.hex
+ 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "STP_LedMatrix.elf"
+   text	   data	    bss	    dec	    hex	filename
+   5307	    200	    420	   5927	   1727	STP_LedMatrix.elf
+Finished building: STP_LedMatrix.siz
+ 
+
+19:10:59 Build Finished (took 795ms)
+

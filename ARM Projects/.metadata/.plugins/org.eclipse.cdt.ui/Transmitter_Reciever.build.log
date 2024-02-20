@@ -1,0 +1,11 @@
+17:04:02 **** Incremental Build of configuration Debug for project Transmitter_Reciever ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "Transmitter_Reciever.elf"
+   text	   data	    bss	    dec	    hex	filename
+   6195	    176	    632	   7003	   1b5b	Transmitter_Reciever.elf
+Finished building: Transmitter_Reciever.siz
+ 
+
+17:04:03 Build Finished (took 400ms)
+

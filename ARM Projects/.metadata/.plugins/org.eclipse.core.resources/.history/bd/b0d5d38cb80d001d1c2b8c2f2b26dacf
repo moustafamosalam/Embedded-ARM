@@ -1,0 +1,176 @@
+/******************************************************************************/
+/*	Author : Moustafa Mosalam												  */
+/*	Date   : 22 JUNE 2022													  */
+/*	Version: V02															  */
+/*	LOG    : V02 --> Serial Display Func Added								  */		
+/******************************************************************************/
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "GPIO_interface.h"
+#include "SYSTICK_interface.h"
+
+#include "STP_interface.h"
+
+#include "LEDMTRX_interface.h"
+#include "LEDMTRX_config.h"
+#include "LEDMTRX_private.h"
+
+#ifndef			NULL
+#define			NULL	(void *)0
+#endif
+
+void LEDMTRX_voidInit		(void)
+{
+	GPIO_voidSetPinDirection(LEDMTRX_ROW0_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW1_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW2_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW3_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW4_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW5_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW6_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_ROW7_PIN,OUTPUT_2MHZ_PP);
+	
+	GPIO_voidSetPinDirection(LEDMTRX_COL0_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL1_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL2_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL3_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL4_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL5_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL6_PIN,OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(LEDMTRX_COL7_PIN,OUTPUT_2MHZ_PP);
+}
+
+static void LEDMTRX_voidDisableCols(void)
+{
+	GPIO_voidSetPinValue(LEDMTRX_COL0_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL1_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL2_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL3_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL4_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL5_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL6_PIN,HIGH);
+	GPIO_voidSetPinValue(LEDMTRX_COL7_PIN,HIGH);
+}
+
+static void LEDMTRX_voidSetRowValues (u8  Copy_u8Value)
+{
+	u8 Local_u8Temp = 0;
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,0);
+	GPIO_voidSetPinValue(LEDMTRX_ROW0_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,1);
+	GPIO_voidSetPinValue(LEDMTRX_ROW1_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,2);
+	GPIO_voidSetPinValue(LEDMTRX_ROW2_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,3);
+	GPIO_voidSetPinValue(LEDMTRX_ROW3_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,4);
+	GPIO_voidSetPinValue(LEDMTRX_ROW4_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,5);
+	GPIO_voidSetPinValue(LEDMTRX_ROW5_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,6);
+	GPIO_voidSetPinValue(LEDMTRX_ROW6_PIN,Local_u8Temp);
+
+	Local_u8Temp = GET_BIT(Copy_u8Value,7);
+	GPIO_voidSetPinValue(LEDMTRX_ROW7_PIN,Local_u8Temp);
+
+}
+
+void LEDMTRX_voidDisplay	(u8 *Copy_u8Data)
+{
+	/*	Enable Column 0						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[0]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL0_PIN,LOW); 		    //Enable Column 0
+	STK_voidSetBusyWait(2500);
+
+	/*	Enable Column 1						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[1]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL1_PIN,LOW); 		    //Enable Column 1
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 2						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[2]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL2_PIN,LOW); 		    //Enable Column 2
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 3						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[3]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL3_PIN,LOW); 		    //Enable Column 3
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 4						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[4]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL4_PIN,LOW); 		    //Enable Column 4
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 5						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[5]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL5_PIN,LOW); 		    //Enable Column 5
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 6						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[6]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL6_PIN,LOW); 		    //Enable Column 6
+	STK_voidSetBusyWait(2500);
+	
+	/*	Enable Column 7						*/
+	LEDMTRX_voidDisableCols(); 							//Disable All Columns
+	LEDMTRX_voidSetRowValues(Copy_u8Data[7]);				//Set Rows Values
+	GPIO_voidSetPinValue(LEDMTRX_COL7_PIN,LOW); 		    //Enable Column 7
+	STK_voidSetBusyWait(2500);
+}
+
+void LEDMTRX_voidDisplayString(u8 * Copy_u8String, u8 Size)
+{
+	for(u8 i=0;i<(Size-7);i++)
+	{
+		for(u8 z=0;z<7;z++)
+		{
+			LEDMTRX_voidDisplay(Copy_u8String);
+		}
+		Copy_u8String++;
+	}
+}
+
+void LEDMTRX_voidSerialDisplay(u8 * Copy_u8String, u8 Size)
+{
+	u16 Local_u16Data=0;
+	u8 Local_u8Col=0;
+	u16 Local_u16hh
+	for (u8 i=0; i<(Size-7); i++)
+	{
+		for(u8 z=0; z<7; z++)
+		{
+			//Local_u8Col=0;
+			Local_u16Data = Copy_u8String[z]<<8;
+			switch(z)
+			{
+			case 0 : Local_u8Col = 0b00000001; break;
+			case 1 : Local_u8Col = 0b00000010; break;
+			case 2 : Local_u8Col = 0b00000100; break;
+			case 3 : Local_u8Col = 0b00001000; break;
+			case 4 : Local_u8Col = 0b00010000; break;
+			case 5 : Local_u8Col = 0b00100000; break;
+			case 6 : Local_u8Col = 0b01000000; break;
+			}
+			Local_u16hh = (Local_u16Data | Local_u8Col);
+			STP_voidSendData(2, Local_u16hh);
+			STK_voidSetBusyWait(2500);
+		}
+		Copy_u8String++;	
+	}
+}

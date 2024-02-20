@@ -1,0 +1,11 @@
+16:59:10 **** Build of configuration Debug for project Hell_DAC ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "Hell_DAC.elf"
+   text	   data	    bss	    dec	    hex	filename
+  39975	    176	    420	  40571	   9e7b	Hell_DAC.elf
+Finished building: Hell_DAC.siz
+ 
+
+16:59:11 Build Finished (took 860ms)
+

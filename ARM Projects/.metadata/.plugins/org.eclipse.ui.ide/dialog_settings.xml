@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="D:\Embedded (ARM)\IMT ARM Drivers\Lecture 14 SPI&amp;TFT\03- Exercise\02- LAB2\02- LAB Code\SPI_TFT_PROJECT"/>
+		<item value="D:\Embedded (ARM)\IMT ARM Drivers\Lecture 14 SPI&amp;TFT\03- Exercise\01- LAB1\02- LAB Code"/>
+		<item value="D:\Embedded (ARM)\ARM lecture notes\Day 26"/>
+		<item value="D:\Embedded (ARM)\IMT ARM Drivers\Lecture 16 WIFI\03- Exercise\01- LAB1\02- LAB Code\WIFI_PROJECT"/>
+		<item value="D:\ha delete it\hello_usart"/>
+		<item value="D:\Embedded (ARM)\ARM\eclipse\Workspace\Dancing Hamada(LEDMTRX &amp; DAC)"/>
+		<item value="D:\Embedded (ARM)\ARM lecture notes\Day 14\Helo_IR"/>
+		<item value="D:\Embedded (ARM)\ARM\eclipse\Workspace\Hello_ARM"/>
+		<item value="D:\Embedded (ARM)\ARM\eclipse\Workspace\Hello_GPIO"/>
+		<item value="D:\Embedded (ARM)\ARM\eclipse\Workspace\GPIO_ARM"/>
+	</list>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="213" key="DIALOG_X_ORIGIN"/>
+		<item value="413" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

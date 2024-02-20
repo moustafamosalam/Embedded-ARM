@@ -1,0 +1,35 @@
+/*
+ * main.c
+ *
+ *  Created on: Jul 27, 2022
+ *      Author: moust
+ */
+
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "RCC_interface.h"
+#include "GPIO_interface.h"
+#include "SYSTICK_interface.h"
+
+#include "STP_interface.h"
+#include "LEDMTRX_interface.h"
+
+u8 Array[20] = {126, 16, 16, 126, 0, 66, 126, 66, 0, 0, 0, 2, 4, 120, 4, 2, 0, 126, 82, 82};
+
+void main(void)
+{
+	RCC_voidInitSystemClock();
+	RCC_voidEnableClock(RCC_APB2, 2);
+
+	STK_voidInit();
+
+	STP_voidInit();
+	LEDMTRX_voidSerialDisplay(Array, 20);
+
+	while(1)
+	{
+
+	}
+}
+

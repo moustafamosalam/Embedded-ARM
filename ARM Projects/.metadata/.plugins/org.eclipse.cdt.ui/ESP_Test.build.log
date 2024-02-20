@@ -1,0 +1,11 @@
+16:59:07 **** Build of configuration Debug for project ESP_Test ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "ESP_Test.elf"
+   text	   data	    bss	    dec	    hex	filename
+   6047	    176	    624	   6847	   1abf	ESP_Test.elf
+Finished building: ESP_Test.siz
+ 
+
+16:59:08 Build Finished (took 1s.54ms)
+

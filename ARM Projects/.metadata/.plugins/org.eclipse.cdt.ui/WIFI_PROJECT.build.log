@@ -1,0 +1,11 @@
+17:54:36 **** Incremental Build of configuration Debug for project WIFI_PROJECT ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "WIFI_PROJECT.elf"
+   text	   data	    bss	    dec	    hex	filename
+   6095	    176	    644	   6915	   1b03	WIFI_PROJECT.elf
+Finished building: WIFI_PROJECT.siz
+ 
+
+17:54:37 Build Finished (took 396ms)
+

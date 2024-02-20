@@ -1,0 +1,83 @@
+/*
+ * main.c
+ *
+ *  Created on: Jul 24, 2022
+ *      Author: moust
+ */
+
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "RCC_interface.h"
+#include "GPIO_interface.h"
+#include "SYSTICK_interface.h"
+#include "RTOS_interface.h"
+#include "LEDMTRX_interface.h"
+#include "DAC_interface.h"
+
+#include "file.h"
+
+u8 Dance1[8] = {0, 144, 74, 253, 74, 144, 0, 0};
+u8 Dance2[8] = {0, 136, 74, 253, 74, 136, 0, 0};
+u8 Dance3[8] = {0, 132, 74, 253, 74, 132, 0, 0};
+
+//extern u8 DAC_Flag;
+
+void Dancing(void)
+{
+
+}
+
+void Hamada1(void)
+{
+	LEDMTRX_voidDisplayString(Dance1, 8);
+}
+
+void Hamada2(void)
+{
+	LEDMTRX_voidDisplayString(Dance2, 8);
+}
+
+void Hamada3(void)
+{
+	LEDMTRX_voidDisplayString(Dance3, 8);
+}
+
+void AmrDiab(void)
+{
+	DAC_voidPlayVoice(habayb_raw, 35016);
+	//RTOS_voidStart();
+
+}
+
+void main(void)
+{
+/*		RCC initialization and PORTA & PORTB Enable 			*/
+	RCC_voidInitSystemClock();
+	RCC_voidEnableClock(RCC_APB2, 2);
+	RCC_voidEnableClock(RCC_APB2, 3);
+
+/*		DAC PORT OUTPUT											*/
+	GPIO_voidSetPortDirection(PORTA, LOW, OUTPUT_2MHZ_PP);
+
+/*		Systick initialization									*/
+	STK_voidInit();
+
+	LEDMTRX_voidInit();
+/*		*/
+
+	RTOS_voidCreateTask(0, 0, 0, AmrDiab);
+	RTOS_voidCreateTask(1, 20, 1, Hamada1);
+	RTOS_voidCreateTask(2, 20, 2, Hamada2);
+	RTOS_voidCreateTask(3, 20, 3, Hamada3);
+
+	//RTOS_voidSuspendTask(1);
+	RTOS_voidStart();
+
+
+
+	while(1)
+	{
+
+	}
+}

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;ROBOT_CAR&apos; to &apos;1-ROBOT_CAR&apos;" description="Rename resource &apos;ROBOT_CAR&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/ROBOT_CAR" name="1-ROBOT_CAR" stamp="1708448507249" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Smart_Home&apos; to &apos;2-Smart_Home&apos;" description="Rename resource &apos;Smart_Home&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/Smart_Home" name="2-Smart_Home" stamp="1708448519721" updateReferences="true"/>
+</session>

@@ -1,0 +1,11 @@
+16:59:08 **** Build of configuration Debug for project EXTI_RGB ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "EXTI_RGB.elf"
+   text	   data	    bss	    dec	    hex	filename
+   5539	    176	    428	   6143	   17ff	EXTI_RGB.elf
+Finished building: EXTI_RGB.siz
+ 
+
+16:59:09 Build Finished (took 901ms)
+

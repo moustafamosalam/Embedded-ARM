@@ -1,0 +1,11 @@
+19:33:42 **** Build of configuration Debug for project Transmitter ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "Transmitter.elf"
+   text	   data	    bss	    dec	    hex	filename
+   6007	    180	    420	   6607	   19cf	Transmitter.elf
+Finished building: Transmitter.siz
+ 
+
+19:33:43 Build Finished (took 857ms)
+

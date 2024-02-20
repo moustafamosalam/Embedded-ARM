@@ -1,0 +1,229 @@
+/*
+ * MAIN.C
+ *
+ *  Created on: Sep 19, 2022
+ *      Author: moust
+ */
+
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "RCC_interface.h"
+#include "GPIO_interface.h"
+#include "NVIC_interface.h"
+#include "SYSTICK_interface.h"
+#include "Timer2_interface.h"
+#include "USART1_interface.h"
+
+#include "ESP_interface.h"
+#include "Ultrasonic_interface.h"
+
+f32 Ultrasonic_Distance = 40;
+
+#define X 0
+#define Y 1
+/*		ENA, IN1 & INT2 for the right side of the car 				*/
+#define ENA_PIN		PIN0
+#define ENB_PIN		PIN5
+#define INT1_PIN	PIN1
+#define INT2_PIN	PIN2
+/*		WARNING : Reverse INT3 and INT4 in wiring 					*/
+#define INT3_PIN	PIN3
+#define INT4_PIN	PIN4
+
+#define MOTOR_PORT	PORTA
+
+
+void main(void)
+{
+	/* Initialize Clock System										*/
+	RCC_voidInitSystemClock();
+	/* Enable Peripheral 2 on APB1 bus (PORTA)						*/
+	RCC_voidEnableClock(RCC_APB2, 2);
+	/* Enable Peripheral 14 on APB1 bus (USART1)					*/
+	RCC_voidEnableClock(RCC_APB2, 14);
+	/* Enable Peripheral 0 on APB1 bus (TIM2)						*/
+	RCC_voidEnableClock(RCC_APB1, 0);
+
+	/* Trigger Pin Output & Echo Pin Input							*/
+	GPIO_voidSetPinDirection(TRIG_PORT, TRIG_PIN, OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(ECHO_PORT, ECHO_PIN, INPUT_FLOATING);
+	/* TX Pin Output & RX Pin Input									*/
+	GPIO_voidSetPinDirection(PORTA, PIN9, OUTPUT_2MHZ_AFPP);
+	GPIO_voidSetPinDirection(PORTA, PIN10, INPUT_FLOATING);
+	GPIO_voidSetPinDirection(PORTA, PIN6, OUTPUT_2MHZ_PP);
+	/* A0 & A1 are output AFPP for PWM								*/
+	GPIO_voidSetPinDirection(MOTOR_PORT, ENA_PIN, OUTPUT_2MHZ_AFPP);
+	GPIO_voidSetPinDirection(MOTOR_PORT, ENB_PIN, OUTPUT_2MHZ_AFPP);
+	GPIO_voidSetPinDirection(MOTOR_PORT, INT1_PIN, OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(MOTOR_PORT, INT2_PIN, OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(MOTOR_PORT, INT3_PIN, OUTPUT_2MHZ_PP);
+	GPIO_voidSetPinDirection(MOTOR_PORT, INT4_PIN, OUTPUT_2MHZ_PP);
+
+	/* Set USARt1 Interrupt Priority & Enable USART1 Interrupt		*/
+	NVIC_voidSetPriority(37, 1, 0, NVIC_4BitGroup_0BitSub);
+	NVIC_voidEnableInterrupt(37);
+
+	/* Initialize SYSTICK											*/
+	STK_voidInit();
+	/* Initialize Timer 2											*/
+	TIMER2_voidInit();
+	TIMER2_voidPWM(1000, 0, CHANNEL1);
+	TIMER2_voidPWM(1000, 0, CHANNEL2);
+	TIMER2_voidPWMCounterEnable();
+
+	/* Initialize USART1											*/
+	USART1_voidInit();
+
+	/* Initialize ESP												*/
+	ESP_voidInit();
+	/* Connect ESP to WIFI											*/
+	ESP_voidWifiConnect((u8*)"Hello", (u8*)"qzwxecrvtbynum");
+
+	/* Joystick Values												*/
+	s8 Coordinates[2] = {0};
+
+	while(1)
+	{
+		GPIO_voidSetPinValue(PORTA, PIN6, HIGH);
+		//Ultrasonic_Distance = Ultrasonic_u8Distance();
+		ESP_voidServerConnect((u8*)"185.176.43.104");
+		GPIO_voidSetPinValue(PORTA, PIN6, LOW);
+		ESP_voidReceiveData((u8*)"mosalam.atwebpages.com", 46, Coordinates);
+		GPIO_voidSetPinValue(PORTA, PIN6, HIGH);
+		if(Ultrasonic_Distance <= 10)
+		{
+			//Move Backward
+			GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+			TIMER2_voidSetCCRVal(1000, CHANNEL1);
+			TIMER2_voidSetCCRVal(1000, CHANNEL2);
+
+			//Then Stop
+			GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, LOW);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+			GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, LOW);
+		}
+		else
+		{
+/*										FORWARD and BACKWARD											*/
+			if( (Coordinates[Y] > 25) && (Coordinates[X] < 25) && (Coordinates[X] > -25) )
+			{
+				//Move Forward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, LOW);
+
+				TIMER2_voidSetCCRVal( (Coordinates[Y] * 10), CHANNEL1);
+				TIMER2_voidSetCCRVal( (Coordinates[Y] * 10), CHANNEL2);
+			}
+			else if( (Coordinates[Y] < -25) && (Coordinates[X] < 25) && (Coordinates[X] > -25) )
+			{
+				//Move Backward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+				TIMER2_voidSetCCRVal( -(Coordinates[Y] * 10), CHANNEL1);
+				TIMER2_voidSetCCRVal( -(Coordinates[Y] * 10), CHANNEL2);
+			}
+
+/*										RIGHT and LEFT													*/
+			else if( (Coordinates[X] > 25) && (Coordinates[Y] < 25) && (Coordinates[Y] > -25) )
+			{
+				//Move Right
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, LOW);
+
+				TIMER2_voidSetCCRVal( (Coordinates[X] * 10), CHANNEL1);
+				TIMER2_voidSetCCRVal( (Coordinates[X] * 10), CHANNEL2);
+			}
+			else if( (Coordinates[X] < -25) && (Coordinates[Y] < 25) && (Coordinates[Y] > -25) )
+			{
+				//Move Left
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+				TIMER2_voidSetCCRVal( -(Coordinates[X] * 10), CHANNEL1);
+				TIMER2_voidSetCCRVal( -(Coordinates[X] * 10), CHANNEL2);
+			}
+
+/*										Right and Left Forward											*/
+			else if( (Coordinates[X] > 25) && (Coordinates[Y] > 25) )
+			{
+				//Move Right-Forward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, LOW);
+
+				TIMER2_voidSetCCRVal( ( (Coordinates[Y] * 10) - 150 ), CHANNEL1);
+				TIMER2_voidSetCCRVal( ( (Coordinates[Y] * 10) + 150 ), CHANNEL2);
+			}
+			else if( (Coordinates[X] < -25) && (Coordinates[Y] > 25) )
+			{
+				//Move Left-Forward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, LOW);
+
+				TIMER2_voidSetCCRVal( ( (Coordinates[Y] * 10) + 150 ), CHANNEL1);
+				TIMER2_voidSetCCRVal( ( (Coordinates[Y] * 10) - 150 ), CHANNEL2);
+			}
+
+/*										Right and Left Backward											*/
+			else if( (Coordinates[Y] < -25) && (Coordinates[X] > 25) )
+			{
+				//Move Right-Backward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+				TIMER2_voidSetCCRVal( ( -(Coordinates[Y] * 10) - 150 ), CHANNEL1);
+				TIMER2_voidSetCCRVal( ( -(Coordinates[Y] * 10) + 150 ), CHANNEL2);
+			}
+			else if( (Coordinates[Y] < -25) && (Coordinates[X] < -25) )
+			{
+				//Move Left-Backward
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+				TIMER2_voidSetCCRVal( ( -(Coordinates[Y] * 10) + 150 ), CHANNEL1);
+				TIMER2_voidSetCCRVal( ( -(Coordinates[Y] * 10) - 150 ), CHANNEL2);
+			}
+
+/*													STOP												*/
+			else if( (Coordinates[Y] > -25) && (Coordinates[Y] < 25) && (Coordinates[X] > -25) && (Coordinates[X] < 25) )
+			{
+				//Stop
+				GPIO_voidSetPinValue(MOTOR_PORT, INT1_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT2_PIN, HIGH);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT3_PIN, LOW);
+				GPIO_voidSetPinValue(MOTOR_PORT, INT4_PIN, HIGH);
+
+				TIMER2_voidSetCCRVal(0, CHANNEL1);
+				TIMER2_voidSetCCRVal(0, CHANNEL2);
+			}
+
+
+		}
+	}
+
+}
+
+
+

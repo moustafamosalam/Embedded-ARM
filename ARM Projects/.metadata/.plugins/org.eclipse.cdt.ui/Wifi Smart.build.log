@@ -1,0 +1,11 @@
+14:41:25 **** Build of configuration Debug for project Wifi Smart ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "Wifi Smart.elf"
+   text	   data	    bss	    dec	    hex	filename
+   7087	    640	    628	   8355	   20a3	Wifi Smart.elf
+Finished building: Wifi Smart.siz
+ 
+
+14:41:26 Build Finished (took 894ms)
+

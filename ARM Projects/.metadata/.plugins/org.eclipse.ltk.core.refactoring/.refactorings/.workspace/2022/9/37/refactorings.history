@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/BootLoader/src/_write.c" element2="/BootLoader/src/main.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1662554466322"/>&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/Hello_PWM/src/_write.c" element2="/Hello_PWM/src/main.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1662639652133"/>
+</session>

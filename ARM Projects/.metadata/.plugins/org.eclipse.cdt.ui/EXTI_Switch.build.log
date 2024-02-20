@@ -1,0 +1,11 @@
+16:59:09 **** Build of configuration Debug for project EXTI_Switch ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "EXTI_Switch.elf"
+   text	   data	    bss	    dec	    hex	filename
+   5383	    176	    424	   5983	   175f	EXTI_Switch.elf
+Finished building: EXTI_Switch.siz
+ 
+
+16:59:10 Build Finished (took 908ms)
+

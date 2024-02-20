@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/Transmitter/src/_write.c" element2="/Transmitter/src/main.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1664583454182"/>&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/Wifi Smart/src/_write.c" element2="/Wifi Smart/src/main.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1664626390318"/>
+</session>
